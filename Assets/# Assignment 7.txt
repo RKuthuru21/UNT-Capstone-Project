@@ -1,0 +1,26 @@
+# Assignment 7
+
+# Polymorphism
+# During this demonstration of code, I will be implementing polymorphism using a demonstration of duck typing where the type or class on
+# an object is less imporant than the method it defines
+# Throughout this code, it demonstrates ducking as there are 2 classes that contain the specific cars and then the reuse of the function engine to return the sound of the car
+# Then another fucntion is created to to print the sound of each of the cars
+class gasCar:
+    def engine(self):
+        return "VROOOM, VROOM!"
+
+class Corvette:
+    def engine(self):
+        return "WUBWUBWUBWUB!"
+
+def noise(car):
+    print(car.engine())
+
+
+gascar = gasCar()
+corvette = Corvette()
+
+noise(gascar)
+noise(corvette) 
+    
+

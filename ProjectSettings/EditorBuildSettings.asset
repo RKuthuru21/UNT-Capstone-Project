@@ -6,10 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/SampleScene1.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 8161cc887fe02de408ec770fcb50aa54
+  - enabled: 1
+    path: Assets/Scenes/TriggersforKitchen.unity
+    guid: 119f74524c8c2384389a768b4d9d7b4e
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 2998b06936673ab4bb804c954fb28ac6, type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 0040b8ae873c0924ebaa3557fe1d0591, type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ea33c000bd3c21a4a8f4d6b871921678, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: a0a4d105c176d65489257dccf2a2e74f, type: 2}
   m_UseUCBPForAssetBundles: 0
