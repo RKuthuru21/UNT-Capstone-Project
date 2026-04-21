@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
     public void StartSimulation()
     {
         // Make sure "SimulationScene" matches your scene's name exactly!
-        SceneManager.LoadScene("TriggersforKitchen");
+        SceneManager.LoadScene("TriggersforKitchen(Updated)");
     }
 
     // 2. Move from Simulation back to the Menu (Resets everything)
