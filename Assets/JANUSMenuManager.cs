@@ -41,6 +41,7 @@ using TMPro;
 /// if a field is null (useful during iterative UI development).
 /// </summary>
 [RequireComponent(typeof(Canvas))]
+[RequireComponent(typeof(CanvasGroup))]
 public class JANUSMenuManager : MonoBehaviour
 {
     // ─────────────────────────────────────────────────────────────────────
@@ -50,6 +51,7 @@ public class JANUSMenuManager : MonoBehaviour
     [Header("Patient Info")]
     [SerializeField] private TextMeshProUGUI patientIDText;
     [SerializeField] private TextMeshProUGUI sessionCounterText;
+    [SerializeField] private TextMeshProUGUI elapsedTimeText;
 
     // ─────────────────────────────────────────────────────────────────────
     // Inspector — Floor Plan Cards
@@ -121,9 +123,12 @@ public class JANUSMenuManager : MonoBehaviour
     private int     _selectedFloor  = 0;
     private string  _selectedModule = "";
     private float   _sessionStart;
+    private float   _elapsedSeconds;
 
     private JANUSHardwareMonitor _hw;
     private Canvas               _canvas;
+    private CanvasGroup          _canvasGroup;
+    private bool                 _visible;
 
     // ─────────────────────────────────────────────────────────────────────
     // Lifecycle
@@ -131,8 +136,9 @@ public class JANUSMenuManager : MonoBehaviour
 
     private void Awake()
     {
-        _canvas = GetComponent<Canvas>();
-        _hw     = GetComponent<JANUSHardwareMonitor>();
+        _canvas      = GetComponent<Canvas>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _hw          = GetComponent<JANUSHardwareMonitor>();
     }
 
     private void Start()
@@ -154,6 +160,18 @@ public class JANUSMenuManager : MonoBehaviour
     {
         if (_hw != null)
             _hw.OnStatusChanged -= OnHardwareStatusChanged;
+    }
+
+    private void Update()
+    {
+        if (_state == SessionState.Running)
+            _elapsedSeconds += Time.deltaTime;
+
+        if (elapsedTimeText != null)
+        {
+            int total = Mathf.FloorToInt(_elapsedSeconds);
+            elapsedTimeText.text = $"{total / 60:00}:{total % 60:00}";
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────
@@ -233,13 +251,20 @@ public class JANUSMenuManager : MonoBehaviour
 
     public void SetVisible(bool visible)
     {
-        gameObject.SetActive(visible);
+        _visible = visible;
+
+        // Hide via Canvas + CanvasGroup, NOT SetActive — keeps
+        // JANUSVRInputHandler alive so the Menu button still works.
+        _canvas.enabled             = visible;
+        _canvasGroup.alpha          = visible ? 1f : 0f;
+        _canvasGroup.interactable   = visible;
+        _canvasGroup.blocksRaycasts = visible;
 
         if (visible) JANUSEvents.OnMenuOpened?.Invoke();
         else         JANUSEvents.OnMenuClosed?.Invoke();
     }
 
-    public void ToggleVisible() => SetVisible(!gameObject.activeSelf);
+    public void ToggleVisible() => SetVisible(!_visible);
 
     /// <summary>
     /// Positions the menu in front of the player's current view.
@@ -272,8 +297,9 @@ public class JANUSMenuManager : MonoBehaviour
         }
         else if (_state == SessionState.Idle && !string.IsNullOrEmpty(_selectedModule))
         {
-            _state        = SessionState.Running;
-            _sessionStart = Time.time;
+            _state          = SessionState.Running;
+            _sessionStart   = Time.time;
+            _elapsedSeconds = 0f;
             JANUSEvents.OnModuleBegin?.Invoke(_selectedModule);
         }
         RefreshSessionControls();
@@ -311,7 +337,7 @@ public class JANUSMenuManager : MonoBehaviour
     private void RefreshPatientDisplay()
     {
         if (patientIDText      != null) patientIDText.text      = _patientID;
-        if (sessionCounterText != null) sessionCounterText.text = $"Session {_currentSession} / {_totalSessions}";
+        if (sessionCounterText != null) sessionCounterText.text = $"Session {_currentSession} of {_totalSessions}";
     }
 
     private void RefreshFloorCards()

@@ -16,7 +16,9 @@ public static class JANUSEvents
     public static Action OnSessionResumed;
     public static Action<string, float> OnSessionEnded;
 
-    // --- ADD THIS LINE BELOW ---
-    public static Action<string> OnHardwareWarning; 
-    // ---------------------------
+    // Hardware
+    public static Action<string> OnHardwareWarning;
+
+    // Gaze dwell (0..1 progress)
+    public static Action<float> OnGazeDwellProgress;
 }
