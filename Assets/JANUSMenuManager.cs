@@ -153,7 +153,7 @@ public class JANUSMenuManager : MonoBehaviour
             _hw.OnStatusChanged += OnHardwareStatusChanged;
 
         // Start hidden — shown when clinician presses Menu button
-        SetVisible(false);
+        SetVisible(true);
     }
 
     private void OnDestroy()
