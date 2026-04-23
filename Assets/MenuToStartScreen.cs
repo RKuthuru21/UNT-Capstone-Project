@@ -14,7 +14,7 @@ public class MenuToStartScreen : MonoBehaviour
     public void GoToMainMenu()
     {
         // Replace "MainMenu" with the exact name of your start screen scene
-        SceneManager.LoadScene("TriggersforKitchen 1");
+        SceneManager.LoadScene("Menutest");
     }
 
     // Call this function from your "Quit" button

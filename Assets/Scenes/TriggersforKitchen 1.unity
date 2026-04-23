@@ -28521,20 +28521,28 @@ MonoBehaviour:
   - RowButton: {fileID: 729085644}
     ModuleID: 0
     LabelText: {fileID: 646354977}
+    StatusText: {fileID: 0}
     Background: {fileID: 0}
   - RowButton: {fileID: 638746565}
     ModuleID: 1
     LabelText: {fileID: 1806357275}
+    StatusText: {fileID: 0}
     Background: {fileID: 0}
   - RowButton: {fileID: 1234765598}
     ModuleID: 2
     LabelText: {fileID: 1269470062}
+    StatusText: {fileID: 0}
     Background: {fileID: 0}
+  beginButton: {fileID: 0}
+  beginOutline: {fileID: 0}
   pauseButton: {fileID: 1979611472}
   endButton: {fileID: 892755464}
   statusText: {fileID: 1497259634}
   colSelected: {r: 0.17, g: 0.37, b: 0.54, a: 1}
   colUnselected: {r: 0.88, g: 0.86, b: 0.82, a: 1}
+  colBeginInactive: {r: 0.47, g: 0.47, b: 0.47, a: 1}
+  colBeginActive: {r: 0.29, g: 0.298, b: 0.294, a: 1}
+  colModuleActive: {r: 0.118, g: 0.31, b: 0.486, a: 0.08}
   colHwOK: {r: 0.24, g: 0.48, b: 0.35, a: 1}
   colHwWarn: {r: 0.6, g: 0.42, b: 0.16, a: 1}
   colHwCritical: {r: 0.72, g: 0.18, b: 0.18, a: 1}
@@ -40550,9 +40558,9 @@ SceneRoots:
   - {fileID: 55020003}
   - {fileID: 826710793}
   - {fileID: 806883436}
-  - {fileID: 1988141099}
   - {fileID: 1992855397}
   - {fileID: 55057917}
+  - {fileID: 1988141099}
   - {fileID: 818489273}
   - {fileID: 1085434312}
   - {fileID: 399281066}
