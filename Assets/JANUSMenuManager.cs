@@ -87,6 +87,7 @@ public class JANUSMenuManager : MonoBehaviour
         public Button    RowButton;
         public string    ModuleID;
         public TextMeshProUGUI LabelText;
+        public TextMeshProUGUI StatusText;  // "In progress" / "Complete" / "Pending"
         public Image     Background;
     }
 
@@ -95,6 +96,8 @@ public class JANUSMenuManager : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────
 
     [Header("Session Controls")]
+    [SerializeField] private Button beginButton;
+    [SerializeField] private Image  beginOutline;   // thick border when active (PDF look)
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button endButton;
     [SerializeField] private TextMeshProUGUI statusText;
@@ -104,8 +107,19 @@ public class JANUSMenuManager : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────
 
     [Header("Colours")]
-    [SerializeField] private Color colSelected    = new Color(0.17f, 0.37f, 0.54f, 1f); // #2C5F8A
-    [SerializeField] private Color colUnselected  = new Color(0.88f, 0.86f, 0.82f, 1f); // #E0DDD9
+    [Tooltip("Floor plan card fill when selected (matches JANUSMenuBuilder.SelectedBlue).")]
+    [SerializeField] private Color colSelected    = new Color(0.118f, 0.310f, 0.486f, 1f); // #1E4F7C deep blue
+    [Tooltip("Floor plan card fill when unselected (matches JANUSMenuBuilder.CardBeige).")]
+    [SerializeField] private Color colUnselected  = new Color(0.890f, 0.855f, 0.800f, 1f); // #E3DACC warm beige
+
+    [Tooltip("Begin Module button fill when the player hasn't picked a module yet.")]
+    [SerializeField] private Color colBeginInactive = new Color(0.470f, 0.470f, 0.470f, 1f); // dimmed
+    [Tooltip("Begin Module button fill when ready to start (module picked, idle state).")]
+    [SerializeField] private Color colBeginActive   = new Color(0.290f, 0.298f, 0.294f, 1f); // BtnDark
+
+    [Tooltip("Module row tint when that module is the currently-selected one.")]
+    [SerializeField] private Color colModuleActive  = new Color(0.118f, 0.310f, 0.486f, 0.08f); // faint blue wash
+
     [SerializeField] private Color colHwOK        = new Color(0.24f, 0.48f, 0.35f, 1f); // #3D7A5A
     [SerializeField] private Color colHwWarn       = new Color(0.60f, 0.42f, 0.16f, 1f); // #9A6B2A
     [SerializeField] private Color colHwCritical   = new Color(0.72f, 0.18f, 0.18f, 1f); // #B82E2E
@@ -197,8 +211,47 @@ public class JANUSMenuManager : MonoBehaviour
         }
 
         // Session controls
+        if (beginButton != null) beginButton.onClick.AddListener(OnBeginPressed);
         if (pauseButton != null) pauseButton.onClick.AddListener(OnPausePressed);
         if (endButton   != null) endButton.onClick.AddListener(OnEndPressed);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Auto-wiring from JANUSMenuBuilder (PDF-style UI generator)
+    // ─────────────────────────────────────────────────────────────────────
+
+    public void WireFromBuilder(
+        TextMeshProUGUI patientID, TextMeshProUGUI sessionCounter, TextMeshProUGUI elapsed,
+        FloorPlanCard[] cards, ModuleRow[] modules,
+        Button begin, Image beginOutlineImg,
+        Button pause, Button end, TextMeshProUGUI status)
+    {
+        patientIDText      = patientID;
+        sessionCounterText = sessionCounter;
+        elapsedTimeText    = elapsed;
+        floorPlanCards     = cards;
+        moduleRows         = modules;
+        beginButton        = begin;
+        beginOutline       = beginOutlineImg;
+        pauseButton        = pause;
+        endButton          = end;
+        statusText         = status;
+    }
+
+    /// <summary>
+    /// Override the serialized palette with the builder's values. Call this
+    /// from JANUSMenuBuilder.Awake so the runtime colors match the design
+    /// even if the component had older values saved in the scene/prefab.
+    /// </summary>
+    public void ApplyBuilderPalette(Color selected, Color unselected,
+                                     Color beginActive, Color beginInactive,
+                                     Color moduleActive)
+    {
+        colSelected      = selected;
+        colUnselected    = unselected;
+        colBeginActive   = beginActive;
+        colBeginInactive = beginInactive;
+        colModuleActive  = moduleActive;
     }
 
     // ─────────────────────────────────────────────────────────────────────
@@ -283,6 +336,18 @@ public class JANUSMenuManager : MonoBehaviour
     // Session button handlers
     // ─────────────────────────────────────────────────────────────────────
 
+    private void OnBeginPressed()
+    {
+        if (_state == SessionState.Idle && !string.IsNullOrEmpty(_selectedModule))
+        {
+            _state          = SessionState.Running;
+            _sessionStart   = Time.time;
+            _elapsedSeconds = 0f;
+            JANUSEvents.OnModuleBegin?.Invoke(_selectedModule);
+            RefreshSessionControls();
+        }
+    }
+
     private void OnPausePressed()
     {
         if (_state == SessionState.Running)
@@ -294,13 +359,6 @@ public class JANUSMenuManager : MonoBehaviour
         {
             _state = SessionState.Running;
             JANUSEvents.OnSessionResumed?.Invoke();
-        }
-        else if (_state == SessionState.Idle && !string.IsNullOrEmpty(_selectedModule))
-        {
-            _state          = SessionState.Running;
-            _sessionStart   = Time.time;
-            _elapsedSeconds = 0f;
-            JANUSEvents.OnModuleBegin?.Invoke(_selectedModule);
         }
         RefreshSessionControls();
     }
@@ -371,27 +429,24 @@ public class JANUSMenuManager : MonoBehaviour
             if (row == null) continue;
             bool active = row.ModuleID == _selectedModule;
             if (row.Background != null)
-                row.Background.color = active ? colSelected : Color.clear;
+                row.Background.color = active ? colModuleActive : Color.clear;
         }
     }
 
     private void RefreshSessionControls()
     {
+        bool canBegin = _state == SessionState.Idle && !string.IsNullOrEmpty(_selectedModule);
+
+        if (beginButton != null) beginButton.interactable = canBegin;
+        if (beginOutline != null)
+            beginOutline.color = canBegin ? colBeginActive : colBeginInactive;
+
         if (pauseButton != null)
         {
             var label = pauseButton.GetComponentInChildren<TextMeshProUGUI>();
             if (label != null)
-            {
-                label.text = _state switch
-                {
-                    SessionState.Idle    => "Begin",
-                    SessionState.Running => "Pause",
-                    SessionState.Paused  => "Resume",
-                    SessionState.Ended   => "Ended",
-                    _                    => "Begin",
-                };
-            }
-            pauseButton.interactable = _state != SessionState.Ended;
+                label.text = _state == SessionState.Paused ? "Resume" : "Pause";
+            pauseButton.interactable = _state == SessionState.Running || _state == SessionState.Paused;
         }
 
         if (endButton != null)
