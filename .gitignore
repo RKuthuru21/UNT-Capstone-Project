@@ -12,6 +12,9 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+# Claude Code worktrees (internal workspace, not project code)
+.claude/
+
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
 *.blend1.meta
@@ -97,35 +100,3 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
-
-# Plastic SCM
-.plastic/
-
-# Claude Code
-.claude/
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
-
-# Compressed archives of source (shouldn't be in repo)
-# Assets/Scripts.zip
-
-# NuGet
-*.nupkg
-packages/
-
-# TextMeshPro
-/[Aa]ssets/TextMesh Pro/
-
-# Misc IDE files
-.idea/
-*.swp
-*.swo
-*~

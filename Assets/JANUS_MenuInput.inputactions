@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "name": "JANUS_MenuInput",
+    "maps": [
+        {
+            "name": "JANUS Menu",
+            "id": "9d8b8e0f-b833-4931-a5a7-2c9e2acdaf3e",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "6fd77b1b-ba12-4827-ae8c-fbe079f9d0b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Menu",
+                    "type": "Button",
+                    "id": "f722ea71-f2fc-4680-971e-6ee675e49ff8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right Menu",
+                    "type": "Button",
+                    "id": "eb7a7dab-8351-4c2b-a7fc-6a2838322c30",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6de6596b-88ca-45b1-be60-758391d2fd20",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0932b3fa-12b9-4e5c-8f5b-a5dd2b74f8ab",
+                    "path": "<XRController>{LeftHand}/{Menu}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bcebf820-38e9-4339-ad21-85ef34c7feae",
+                    "path": "<XRController>{RightHand}/{Menu}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
