@@ -15,6 +15,11 @@ Project Janus is an immersive VR simulation designed to improve the assessment o
 **Semester:** Spring 2026
 
 ---
+## Project Images
+
+![VR Floor Plan](VR Floor Plan.jpg)
+
+---
 
 ## Prerequisites
 
