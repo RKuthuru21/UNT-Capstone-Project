@@ -2,7 +2,9 @@
 
 > **VR Neuropsychological Assessment Simulation**  
 > Developed in collaboration with the UNT Psychology Department's Neuropsychological Innovation Lab (NIL)
+  A video game controller pointing at a screen
 
+AI-generated content may be incorrect.
 ---
 
 ## Overview
