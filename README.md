@@ -18,6 +18,9 @@ Project Janus is an immersive VR simulation designed to improve the assessment o
 ## Project Images
 
 ![VR Floor Plan](https://github.com/Synergy-Solutions-UNT/Synergy-Solutions-Project/blob/main/Demo%20Images/VR%20Floor%20Plan.jpg)
+![VR Event Triggers](https://github.com/Synergy-Solutions-UNT/Synergy-Solutions-Project/blob/main/Demo%20Images/VR%20Event%20Triggers.jpg)
+![VR Movement Feature](https://github.com/Synergy-Solutions-UNT/Synergy-Solutions-Project/blob/main/Demo%20Images/Movement%20Feature.jpg)
+![VR Game Menu](https://github.com/Synergy-Solutions-UNT/Synergy-Solutions-Project/blob/main/Demo%20Images/VR%20Game%20Maenu.jpg)
 
 ---
 
